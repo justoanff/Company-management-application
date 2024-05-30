@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Employee</title>
+</head>
+<body>
+<div>
+    <h2>UPDATE EMPLOYEE</h2>
+    <form method="post" th:action="'/save'">
+        <p>
+            <button type="submit">UPDATE</button>
+        </p>
+        <input type="hidden" th:field="${employee.id}"/>
+        <div class="control-group">
+            <label>Employee name:</label>
+            <input type="text" th:field="${employee.name}"/>
+            <div th:if="${#fields.hasErrors('employee.name')}"
+                 th:errorclass="error" th:errors="${employee.name}"/>
+        </div>
+        <p>
+            <label>Employee age:</label>
+            <input class="form-control" type="number"
+                   th:field="${employee.age}">
+        </p>
+        <p class="form-group">
+            <label>Employee image:</label><br>
+            <img th:src="${employee.image}" width="100" height="100">
+            <input class="form-control" type="text"
+                   th:field="${employee.image}">
+        </p>
+        <p class="form-group">
+            <label>Employee address:</label>
+            <input class="form-control" type="text"
+                   th:field="${employee.address}">
+        </p>
+        <p class="form-group">
+            <label>Company</label>
+            <select class="form-select" th:field="*{employee.company}">
+                <option th:each="comp:${companies}"
+                        th:value="${comp.id}"
+                        th:text="${comp.name}";
+            </select>
+        </p>
+        <hr>
+    </form>
+
+</div>
+</body>
+</html>

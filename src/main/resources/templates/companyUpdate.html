@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="_layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Company</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2>Update Company</h2>
+    <form method="post" th:action="'/company/save'">
+        <input type="hidden" th:field="${company.id}"/>
+        <div class="control-group">
+            <label>Company name:</label>
+            <input type="text" th:field="${company.name}"/>
+            <div th:if="${#fields.hasErrors('company.name')}"
+                 th:errorclass="error" th:errors="${company.name}"/>
+        </div>
+
+        <p class="form-group">
+            <label>Compane image:</label><br>
+            <img th:src="${company.image}" width="100" height="100">
+            <input class="form-control" type="text"
+                   th:field="${company.image}">
+        </p>
+        <p class="form-group">
+            <label>company address:</label>
+            <input class="form-control" type="text"
+                   th:field="${company.address}">
+        </p>
+
+        <p>
+            <button type="submit">UPDATE</button>
+        </p>
+    </form>
+</div>
+</body>
+</html>

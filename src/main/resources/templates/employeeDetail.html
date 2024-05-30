@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Detail</title>
+</head>
+<body>
+<div>
+    <h1>EMPLOYEE DETAIL</h1>
+    <div style="display: flex; flex-direction: row;">
+        <div>
+            <img th:src="${employee.image}" width="210" height="210">
+        </div>
+        <div>
+            <h2 th:text="${employee.name}"/>
+            <p th:text="'Age: ' + ${employee.age}"/>
+            <p th:text="'Address: ' + ${employee.address}"/>
+            <div th:if="${employee.company == null or employee.company == ''}">
+                <!-- Content to be displayed if the employee is not associated with any company -->
+                <p>This employee is not associated with any company.</p>
+            </div>
+            <div th:if="${employee.company != null}">
+                <!-- Content to be displayed if the employee is associated with a company -->
+                <p>Employee works for: <span th:text="${employee.company.getName()}"></span></p>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

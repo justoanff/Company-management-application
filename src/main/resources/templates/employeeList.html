@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="_layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee List</title>
+    <script>
+        window.addEventListener("load", function () {
+            let comId = [[${comId}]];
+            let gender = [[${gender}]];
+            let sortMode = [[${sortMode}]];
+            let page = [[${page}]];
+
+            function filterRedirect() {
+                let url = "/employee/list?company=" + comId + "&gender=" + gender;
+                url = url + "&sort=" + sortMode + "&page=" + page;
+                window.location.href = url; // redirect
+            }
+
+            const pageLinks = document.querySelectorAll("#pagibar > a");
+            pageLinks.forEach(link => {
+                link.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    page = parseInt(link.getAttribute("data"));
+                    filterRedirect();
+                });
+            });
+            const comFilter = document.getElementById("filterCompany");
+            comFilter.value = comId;
+            comFilter.addEventListener("change", function () {
+                comId = comFilter.value;
+                filterRedirect();
+            });
+            const genderFilter = document.getElementById("filterGender");
+            genderFilter.value = gender;
+            genderFilter.addEventListener("change", function () {
+                gender = genderFilter.value;
+                filterRedirect();
+            })
+            const sortMenu = document.getElementById("sortOptions");
+            sortMenu.value = sortMode;
+            sortMenu.addEventListener("change", function () {
+                sortMode = sortMenu.value;
+                filterRedirect();
+            });
+        });
+    </script>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2>EMPLOYEE LIST</h2>
+    <div class="filterContainer">
+        Company:
+        <select id="filterCompany">
+            <option value="0">All companies</option>
+            <option th:each="comp : ${companies}"
+                    th:value="${comp.id}"
+                    th:text="${comp.name}"/>
+        </select>
+        Sort:
+        <select id="sortOptions">
+            <option value="0">Latest</option>
+            <option value="1">Oldest</option>
+            <option value="2">By name ASC</option>
+            <option value="3">By name DESC</option>
+        </select>
+        Gender:
+        <select name="" id="filterGender">
+            <option value="0">All genders</option>
+            <option th:value="1" th:text="MALE"/>
+            <option th:value="2" th:text="FEMALE"/>
+
+        </select>
+
+    </div>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Image</th>
+            <th>Gender</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+        <tr th:each="employee : ${employees}">
+            <td th:text="${employee.id}"/>
+            <td>
+                <a th:href="'/employee/detail/' + ${employee.id}"
+                   th:text="${employee.name}"/>
+            </td>
+            <td th:text="${employee.age}"/>
+            <td>
+                <img th:src="${employee.image}" width="100" height="100"/>
+            </td>
+            <td th:text="${employee.gender}"/>
+
+            <td><a th:href="'/employee/update/' + ${employee.id}">UPDATE</a></td>
+            <td><a th:href="'/employee/delete/' + ${employee.id}">DELETE</a></td>
+        </tr>
+    </table>
+    <div class="pagination" id="pagibar">
+        <a th:data="${i}"
+           th:each="i: ${#numbers.sequence(0, pages - 1)}"
+           href="#"
+           th:text="${i + 1}"/>
+    </div>
+</div>
+
+
+</body>
+</html>
